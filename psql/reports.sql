@@ -27,7 +27,7 @@ WHERE (incidents.incident_number LIKE '2826' OR incidents.incident_number LIKE '
 SELECT node_id, link, link_name, date_down, date_up, date_up - date_down AS duration
 FROM interlinks
 WHERE (date_down IS NOT NULL OR date_up IS NOT NULL) 
-  AND (date_down > '2020-02-01 00:00:00' OR date_up > '2020-02-01 00:00:00')
+  AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY node_id, link, id
 ;
 ----------------------------------------------- external_alarm
@@ -68,7 +68,7 @@ FROM external_alarm
   LEFT JOIN listerm USING (node_id, cry, cpl, term)
   LEFT JOIN directory ON dir_nb=directory_number
 WHERE (date_down IS NOT NULL OR date_up IS NOT NULL) 
-  AND (date_down > '2020-02-01 00:00:00' OR date_up > '2020-02-01 00:00:00')
+  AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY external_alarm.node_id, external_alarm.cry, external_alarm.cpl, external_alarm.term ,external_alarm.id
 ;
 ----------------------------------------------- link_T2
@@ -109,7 +109,7 @@ SELECT node_id,
   date_up - date_down AS duration
 FROM link_T2
 WHERE (date_down IS NOT NULL OR date_up IS NOT NULL) 
-  AND (date_down > '2020-02-01 00:00:00' OR date_up > '2020-02-01 00:00:00')
+  AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY node_id, cry, cpl, id
 ;
 ----------------------------------------------- kfs8_status
@@ -189,7 +189,7 @@ FROM ua_term
   LEFT JOIN listerm USING (node_id, cry, cpl, term)
   LEFT JOIN directory ON dir_nb=directory_number
 WHERE (date_down IS NOT NULL OR date_up IS NOT NULL) 
-  AND (date_down > '2020-02-01 00:00:00' OR date_up > '2020-02-01 00:00:00')
+  AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY ua_term.node_id, ua_term.cry, ua_term.cpl, ua_term.term, ua_term.id 
 ;
 ----------------------------------------------- loop
@@ -212,7 +212,7 @@ SELECT incidents.date,
   incidents.incident_number||'-'||COALESCE(CAST(incidents.count_inc AS text),'') AS incident, 
   incidents.incident_detail 
 FROM incidents
-WHERE date > '2020-02-01 00:00:00' 
+WHERE date > '2020-01-01 00:00:00' 
   AND incidents.incident_number NOT IN ('2050','2053','2826','2827','1100','1099','2862','2867','0310','0311','3660','3692','0275','0276','1125','1554','2750','2813','2864','2865','2866','3812','4109','5068','1680','0283','0274','1546','1721','2766','2780','2830','2841','2873','2101','2825','2839','2840','2080','2085','2112','2113','3580','2102','2836','2838')
 ORDER BY severity, incident_number, node_id, cry, cpl, term, ac, date
 ;
@@ -227,7 +227,7 @@ SELECT incidents.date,
   incidents.incident_number||'-'||COALESCE(CAST(incidents.count_inc AS text),'') AS incident, 
   incidents.incident_detail 
 FROM incidents
-WHERE date > '2020-02-01 00:00:00' 
+WHERE date > '2020-01-01 00:00:00' 
   AND incidents.incident_number IN ('0275','0276','1125','1554','2750','2813','1680','0283','0274','1546','2101','2825','2839','2840','2080','2085','2112','2113','3580','2102','2836','2838')
 ORDER BY severity, incident_number, node_id, cry, cpl, term, ac, date
 ;
@@ -240,7 +240,7 @@ SELECT incidents.date,
   incidents.incident_number||'-'||COALESCE(CAST(incidents.count_inc AS text),'') AS incident, 
   incidents.incident_detail 
 FROM incidents
-WHERE date > '2020-02-01 00:00:00' 
+WHERE date > '2020-01-01 00:00:00' 
   AND incidents.incident_number IN ('2864','2865','2866','3812','4109','5068','1721','2766','2780','2830','2841','2873')
 ORDER BY severity, incident_number, node_id, cry, cpl, term, ac, date
 ;
@@ -273,7 +273,7 @@ WHERE (incidents.incident_number LIKE '2826' OR incidents.incident_number LIKE '
 SELECT node_id, link, link_name, date_down, date_up, date_up - date_down AS duration
 FROM interlinks_satelit
 WHERE (date_down IS NOT NULL OR date_up IS NOT NULL) 
-  AND (date_down > '2020-02-01 00:00:00' OR date_up > '2020-02-01 00:00:00')
+  AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY node_id, link, id
 ;
 ----------------------------------------------- link_hybrid_cs
@@ -306,7 +306,7 @@ SELECT node_id, cry_cpl_term, date_down, date_up,
   date_up - date_down AS duration
 FROM link_hybrid_cs
 WHERE (date_down IS NOT NULL OR date_up IS NOT NULL) 
-  AND (date_down > '2020-02-01 00:00:00' OR date_up > '2020-02-01 00:00:00')
+  AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY node_id, cry_cpl_term ,id 
 ;
 ----------------------------------------------- link_hybrid_orsova
@@ -339,12 +339,6 @@ SELECT node_id, cry_cpl_term, date_down, date_up,
   date_up - date_down AS duration
 FROM link_hybrid_orsova
 WHERE (date_down IS NOT NULL OR date_up IS NOT NULL) 
-  AND (date_down > '2020-02-01 00:00:00' OR date_up > '2020-02-01 00:00:00')
+  AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY node_id, cry_cpl_term ,id 
 ;
-
-
-
-
-
-
