@@ -309,8 +309,8 @@ WHERE (date_down IS NOT NULL OR date_up IS NOT NULL)
   AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY node_id, cry_cpl_term ,id 
 ;
------------------------------------------------ link_hybrid_orsova
-WITH link_hybrid_orsova 
+----------------------------------------------- link_hybrid_o
+WITH link_hybrid_o 
 AS 
 (
 SELECT id, node_id, 
@@ -337,7 +337,7 @@ WHERE (incident_number LIKE '2867' OR incident_number LIKE '2862') AND node_id=5
 )
 SELECT node_id, cry_cpl_term, date_down, date_up, 
   date_up - date_down AS duration
-FROM link_hybrid_orsova
+FROM link_hybrid_o
 WHERE (date_down IS NOT NULL OR date_up IS NOT NULL) 
   AND (date_down > '2020-01-01 00:00:00' OR date_up > '2020-01-01 00:00:00')
 ORDER BY node_id, cry_cpl_term ,id 
