@@ -116,7 +116,9 @@ FROM incidents_temp
   LEFT OUTER JOIN incidents USING (id, date, network_id, node_id)
 WHERE (incidents_temp.incident_number LIKE '1100' OR incidents_temp.incident_number LIKE '1099') AND incidents.id IS NULL
 ) 
-SELECT last_name, first_name, external_alarm.node_id, external_alarm.cry, external_alarm.cpl, external_alarm.term, 
+SELECT last_name||'-'||first_name AS name, 
+  external_alarm.node_id, 
+  external_alarm.cry||'-'||external_alarm.cpl||'-'||external_alarm.term AS cry_cpl_term,  
   date_down AS data_loss, 
   date_up AS data_in_service, 
   date_up - date_down AS duration
@@ -171,7 +173,9 @@ FROM incidents_temp
 WHERE (incidents_temp.incident_number LIKE '0310' OR incidents_temp.incident_number LIKE '0311')
   AND trk NOT LIKE 'link' AND incidents.id IS NULL
 ) 
-SELECT node_id, cry, cpl, link_name,
+SELECT node_id, 
+  cry||'-'||cpl AS cry_cpl, 
+  link_name,
   date_down AS data_released, 
   date_up AS data_established, 
   date_up - date_down AS duration
@@ -217,7 +221,8 @@ FROM incidents_temp
   LEFT OUTER JOIN incidents USING (id, date, network_id, node_id)
 WHERE incidents_temp.incident_number LIKE '3660' AND incidents.id IS NULL 
 ) 
-SELECT node_id, cry, cpl, 
+SELECT node_id, 
+  cry||'-'||cpl AS cry_cpl, 
   date_down AS date_ko, 
   date_up AS date_ok, 
   date_up - date_down AS duration
@@ -258,7 +263,18 @@ FROM incidents_temp
 WHERE (incidents_temp.incident_number LIKE '2050' OR incidents_temp.incident_number LIKE '2053')
   AND incidents.id IS NULL
 ) 
-SELECT dir_nb, last_name, first_name, ua_term.node_id, ua_term.cry, ua_term.cpl, ua_term.term, 
+SELECT dir_nb, 
+  CASE WHEN typ_term LIKE 'AUTPOS'     THEN NULL
+       WHEN typ_term LIKE '4010(VLE_3' THEN '4010'
+       WHEN typ_term LIKE '4020(LE_3G' THEN '4020'
+       WHEN typ_term LIKE '4035(MR2_3' THEN '4035T'
+       WHEN typ_term LIKE 'OP 4035'    THEN '4035T'
+       WHEN typ_term LIKE 'TYUSGS0'    THEN 'S0 Set'
+       ELSE typ_term 
+    END AS typ_term,
+  last_name||'-'||first_name AS name, 
+  ua_term.node_id, 
+  ua_term.cry||'-'||ua_term.cpl||'-'||ua_term.term AS cry_cpl_term, 
   date_down AS data_loss, 
   date_up AS data_in_service, 
   date_up - date_down AS duration
@@ -280,7 +296,7 @@ COPY
 ( 
 SELECT incidents_temp.date,
   incidents_temp.node_id,
-  CAST(incidents_temp.cry AS TEXT) || '-' || CAST(incidents_temp.cpl AS TEXT),
+  CAST(incidents_temp.cry AS TEXT) || '-' || CAST(incidents_temp.cpl AS TEXT) AS cry_cpl,
   CASE WHEN incidents_temp.count_inc IS NULL THEN incidents_temp.incident_detail
        ELSE incidents_temp.incident_detail || ' x ' || CAST(incidents_temp.count_inc AS TEXT) 
     END AS incident_detail
