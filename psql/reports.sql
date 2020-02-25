@@ -218,6 +218,25 @@ ORDER BY severity, incident_number, node_id, cry, cpl, term, ac, date
 ;
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
+----------------------------------------------- loop-daily
+SELECT incidents.node_id,
+  CAST(incidents.cry AS TEXT) || '-' || CAST(incidents.cpl AS TEXT) AS cry_cpl,
+  CAST(EXTRACT(day FROM incidents.date) AS TEXT)||'-'||CAST(EXTRACT(month FROM incidents.date) AS TEXT)||'-'||CAST(EXTRACT(year FROM incidents.date) AS TEXT) AS day,
+  SUM(COALESCE(incidents.count_inc,1)), 
+  incident_detail
+FROM incidents
+WHERE incidents.incident_number LIKE '3692' AND date BETWEEN '2020-01-01 00:00:00' AND '2021-01-01 00:00:00'
+GROUP BY incidents.node_id, cry, cpl, incident_detail,
+  EXTRACT(day FROM incidents.date),
+  EXTRACT(month FROM incidents.date),
+  EXTRACT(year FROM incidents.date) 
+ORDER BY incidents.node_id, cry, cpl, 
+  EXTRACT(year FROM incidents.date),
+  EXTRACT(month FROM incidents.date),
+  EXTRACT(day FROM incidents.date) 
+;
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
 ----------------------------------------------- inc***********
 SELECT incidents.date, 
   incidents.node_id||'-'||incidents.cpu AS node, 
