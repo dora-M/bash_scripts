@@ -333,7 +333,7 @@ SELECT id, node_id,
        ELSE NULL 
   END AS date_up
 FROM incidents
-WHERE (incident_number LIKE '2867' OR incident_number LIKE '2862') AND node_id=58
+WHERE (incident_number LIKE '2867' OR incident_number LIKE '2862') AND node_id=44
 )
 SELECT node_id, cry_cpl_term, date_down, date_up, 
   date_up - date_down AS duration
