@@ -182,8 +182,8 @@ SELECT dir_nb,
   last_name||'-'||first_name AS name, 
   ua_term.node_id, 
   ua_term.cry||'-'||ua_term.cpl||'-'||ua_term.term AS cry_cpl_term, 
-  date_down AS data_loss, 
-  date_up AS data_in_service, 
+  COALESCE(CAST(date_down AS TEXT),'----:--:-- --:--:--') AS data_loss, 
+  COALESCE(CAST(date_up   AS TEXT),'----:--:-- --:--:--') AS data_in_service,
   date_up - date_down AS duration
 FROM ua_term 
   LEFT JOIN listerm USING (node_id, cry, cpl, term)
