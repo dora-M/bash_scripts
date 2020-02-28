@@ -77,7 +77,7 @@ FROM interlinks
 WHERE date_down IS NOT NULL OR date_up IS NOT NULL
 ORDER BY node_id, link, id 
 ) 
-TO '/var/lib/pgsql/reports/mail_interlinks.csv'  DELIMITER ';' CSV HEADER;
+TO '/var/lib/pgsql/reports/mail_interlinks'  DELIMITER E'\t' CSV HEADER;
 END IF;
 ----------------------------------------------- external_alarm
 IF 
@@ -128,7 +128,7 @@ FROM external_alarm
 WHERE date_down IS NOT NULL OR date_up IS NOT NULL
 ORDER BY external_alarm.node_id, external_alarm.cry, external_alarm.cpl, external_alarm.term ,external_alarm.id 
 ) 
-TO '/var/lib/pgsql/reports/mail_external_alarm.csv'  DELIMITER ';' CSV HEADER;
+TO '/var/lib/pgsql/reports/mail_external_alarm'  DELIMITER E'\t' CSV HEADER;
 END IF;
 ----------------------------------------------- link_T2
 IF 
@@ -183,7 +183,7 @@ FROM link_T2
 WHERE date_down IS NOT NULL OR date_up IS NOT NULL
 ORDER BY node_id, cry, cpl, id 
 ) 
-TO '/var/lib/pgsql/reports/mail_link_T2.csv'  DELIMITER ';' CSV HEADER;
+TO '/var/lib/pgsql/reports/mail_link_T2'  DELIMITER E'\t' CSV HEADER;
 END IF;
 ----------------------------------------------- kfs8_status
 IF 
@@ -230,7 +230,7 @@ FROM kfs8_status
 WHERE date_down IS NOT NULL OR date_up IS NOT NULL
 ORDER BY node_id, cry, cpl, id 
 ) 
-TO '/var/lib/pgsql/reports/mail_kfs8_status.csv'  DELIMITER ';' CSV HEADER;
+TO '/var/lib/pgsql/reports/mail_kfs8_status'  DELIMITER E'\t' CSV HEADER;
 END IF;
 ----------------------------------------------- ua_term
 IF 
@@ -284,7 +284,7 @@ FROM ua_term
 WHERE date_down IS NOT NULL OR date_up IS NOT NULL
 ORDER BY ua_term.node_id, ua_term.cry, ua_term.cpl, ua_term.term, ua_term.id 
 ) 
-TO '/var/lib/pgsql/reports/mail_ua_term.csv'  DELIMITER ';' CSV HEADER;
+TO '/var/lib/pgsql/reports/mail_ua_term'  DELIMITER E'\t' CSV HEADER;
 END IF;
 ----------------------------------------------- loop
 IF 
@@ -305,7 +305,7 @@ FROM incidents_temp
 WHERE incidents_temp.incident_number LIKE '3692' AND incidents.id IS NULL
 ORDER BY incidents_temp.date, incidents_temp.id, incidents_temp.node_id
 ) 
-TO '/var/lib/pgsql/reports/mail_loop.csv'  DELIMITER ';' CSV HEADER;
+TO '/var/lib/pgsql/reports/mail_loop'  DELIMITER E'\t' CSV HEADER;
 END IF;
 ----------------------------------------------- inc
 IF 
@@ -327,8 +327,17 @@ FROM incidents_temp
   LEFT OUTER JOIN incidents USING (id, date, network_id, node_id)
 WHERE incidents_temp.incident_number NOT IN ('2050','2053','2826','2827','1100','1099','2862','2867','0310','0311','3660','3692','0275','0276','1125','1554','2750','2813','2864','2865','2866','3812','4109','5068','1680','0283','0274','1546','1721','2766','2780','2830','2841','2873','2101','2825','2839','2840','2080','2085','2112','2113','3580','2102','2836','2838')
   AND incidents.id IS NULL
+ORDER BY 
+  incidents_temp.severity, 
+  incidents_temp.incident_number, 
+  incidents_temp.node_id, 
+  incidents_temp.cry, 
+  incidents_temp.cpl, 
+  incidents_temp.term, 
+  incidents_temp.ac, 
+  incidents_temp.date
 ) 
-TO '/var/lib/pgsql/reports/mail_inc.csv'  DELIMITER ';' CSV HEADER;
+TO '/var/lib/pgsql/reports/mail_inc'  DELIMITER E'\t' CSV HEADER;
 END IF;
 --------------------------------------------------------------------------
 INSERT INTO incidents
