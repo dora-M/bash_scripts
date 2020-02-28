@@ -135,3 +135,20 @@ cat $PTH_lcd/inc/inc-* > $PTH_lcd/inc/inc.csv
 psql -d incidents -c "DELETE FROM incidents_import;" 
 psql -d incidents -c "\COPY incidents_import FROM '$PTH_lcd/inc/inc.csv' DELIMITER '$';"
 psql -d incidents -f "$PTH_psql/$psql_file"
+
+mv /var/lib/pgsql/reports/* /usr/local/pbx/reports/
+PTH_reports=/usr/local/pbx/reports
+ls $PTH_reports | while read file_list
+do
+  file_for_mail="$PTH_reports/$file_list"
+  mail -s $file_list \
+    -S smtp=smtp://mail.example.com:587 \
+    -S smtp-use-starttls
+    -S smtp-auth=login
+    -S smtp-auth-user=todo@example.com \
+    -S smtp-auth-password="1234abcd"
+    -S ssl-verify=ignore
+    -S from=todo@example.com \
+    contact@example.com < $file_for_mail
+done
+rm -f /usr/local/pbx/reports/*
